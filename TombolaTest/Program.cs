@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Reflection.Metadata;
+using System.Text.Json;
 using TombolaTest.Data;
+using TombolaTest.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +14,33 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+var options = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = null
+};
+var json = await File.ReadAllTextAsync("AllTheBeans.json");
+//var beans = JsonSerializer.Deserialize<List<CoffeeBean>>(json, options);
+var beans = System.Text.Json.JsonSerializer.Deserialize<List<CoffeeBean>>(json);
+
 builder.Services.AddDbContext<DataContext>(options => 
-{ 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")); 
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSeeding((context, _) =>
+    {
+        
+        
+        if (context.Set<CoffeeBean>().Any())
+        {
+            //load json into db here
+            context.SaveChanges();
+        }
+    });
 });
+
+
+
 
 var app = builder.Build();
 
@@ -23,6 +50,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 
 app.UseHttpsRedirection();
 
