@@ -1,0 +1,6 @@
+@TombolaTest_HostAddress = http://localhost:5155
+
+GET {{TombolaTest_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
