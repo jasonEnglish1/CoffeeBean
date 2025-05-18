@@ -11,8 +11,8 @@ using TombolaTest.Data;
 namespace TombolaTest.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250515210544_CoffeeBean")]
-    partial class CoffeeBean
+    [Migration("20250518154430_CoffeeBeans")]
+    partial class CoffeeBeans
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,7 @@ namespace TombolaTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CofeeBeans");
+                    b.ToTable("CoffeeBeans");
                 });
 #pragma warning restore 612, 618
         }

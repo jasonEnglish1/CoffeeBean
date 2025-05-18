@@ -5,13 +5,13 @@
 namespace TombolaTest.Migrations
 {
     /// <inheritdoc />
-    public partial class CoffeeBean : Migration
+    public partial class CoffeeBeans : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CofeeBeans",
+                name: "CoffeeBeans",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -26,7 +26,7 @@ namespace TombolaTest.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CofeeBeans", x => x.Id);
+                    table.PrimaryKey("PK_CoffeeBeans", x => x.Id);
                 });
         }
 
@@ -34,7 +34,7 @@ namespace TombolaTest.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CofeeBeans");
+                name: "CoffeeBeans");
         }
     }
 }

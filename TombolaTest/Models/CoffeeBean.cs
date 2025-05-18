@@ -2,7 +2,7 @@
 
 namespace TombolaTest.Models
 {    
-    public partial class CoffeeBean
+    public class CoffeeBean
     {
         [JsonPropertyName("_id")]
         public required string Id { get; set; }

@@ -62,7 +62,7 @@ namespace TombolaTest.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CofeeBeans");
+                    b.ToTable("CoffeeBeans");
                 });
 #pragma warning restore 612, 618
         }

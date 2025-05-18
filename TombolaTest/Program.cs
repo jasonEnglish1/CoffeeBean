@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Reflection.Metadata;
+using Quartz;
 using System.Text.Json;
 using TombolaTest.Data;
-using TombolaTest.Migrations;
+using TombolaTest.Jobs;
+using TombolaTest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,27 +20,46 @@ var options = new JsonSerializerOptions
 {
     PropertyNamingPolicy = null
 };
-var json = await File.ReadAllTextAsync("AllTheBeans.json");
-//var beans = JsonSerializer.Deserialize<List<CoffeeBean>>(json, options);
-var beans = System.Text.Json.JsonSerializer.Deserialize<List<CoffeeBean>>(json);
 
-builder.Services.AddDbContext<DataContext>(options => 
+var json = File.ReadAllText("AllTheBeans.json");
+var data = JsonSerializer.Deserialize<List<CoffeeBean>>(json);
+
+builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseSeeding((context, _) =>
-    {
-        
-        
-        if (context.Set<CoffeeBean>().Any())
-        {
-            //load json into db here
-            context.SaveChanges();
-        }
-    });
+
 });
 
 
+var contextOptions = new DbContextOptionsBuilder<DataContext>()
+    .Options;
 
+using var context = new DataContext(contextOptions);
+if (!context.CoffeeBeans.Any())
+{
+    context.CoffeeBeans.AddRange(data);
+    context.SaveChanges();
+}
+
+
+// Configure the Quartz job scheduler
+builder.Services.AddQuartz(options =>
+{
+    var jobkey = JobKey.Create("BeanOfTheDayJob");
+    options.AddJob<BeanOfTheDayJob>(jobkey)
+        .AddTrigger(trigger =>
+        trigger
+            .WithCronSchedule("0 0 * * * ?")
+            .ForJob(jobkey)
+            );
+});
+
+
+// Builds are finished before program is closed
+builder.Services.AddQuartzHostedService(option =>
+{
+    option.WaitForJobsToComplete = true;
+});
 
 var app = builder.Build();
 
