@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TombolaTest.Data;
+using CoffeeBean.Data;
 
 #nullable disable
 
-namespace TombolaTest.Migrations
+namespace CoffeeBean.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace TombolaTest.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TombolaTest.Models.CoffeeBean", b =>
+            modelBuilder.Entity("CoffeeBean.Models.CoffeeBean", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)")

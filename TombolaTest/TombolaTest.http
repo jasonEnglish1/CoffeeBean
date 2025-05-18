@@ -1,6 +1,6 @@
-@TombolaTest_HostAddress = http://localhost:5155
+@CoffeeBean_HostAddress = http://localhost:5155
 
-GET {{TombolaTest_HostAddress}}/weatherforecast/
+GET {{CoffeeBean_HostAddress}}/coffeebean/
 Accept: application/json
 
 ###

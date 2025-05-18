@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TombolaTest.Models
+namespace CoffeeBean.Models
 {    
-    public class CoffeeBean
+    public class CoffeeBeanDto
     {
         [JsonPropertyName("_id")]
         public required string Id { get; set; }

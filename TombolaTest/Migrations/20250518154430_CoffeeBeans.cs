@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace TombolaTest.Migrations
+namespace CoffeeBean.Migrations
 {
     /// <inheritdoc />
     public partial class CoffeeBeans : Migration

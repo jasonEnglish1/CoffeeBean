@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TombolaTest.Models;
+using CoffeeBean.Models;
 
-namespace TombolaTest.Data
+namespace CoffeeBean.Data
 {
     public class DataContext : DbContext
     {
@@ -17,8 +17,7 @@ namespace TombolaTest.Data
                 @"Server=(LocalDb)\MSSQLLocalDB;Database=CoffeeBeanDb;Trusted_Connection=true;TrustServerCertificate=true;");
         }
 
-        public DbSet<CoffeeBean> CoffeeBeans { get; set; }
-
+        public DbSet<CoffeeBeanDto> CoffeeBeans { get; set; }
 
     }
 }

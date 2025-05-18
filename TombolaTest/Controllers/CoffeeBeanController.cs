@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TombolaTest.Data;
-using TombolaTest.Models;
+using CoffeeBean.Data;
+using CoffeeBean.Models;
 
-namespace TombolaTest.Controllers
+namespace CoffeeBean.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -13,7 +13,7 @@ namespace TombolaTest.Controllers
         private readonly DataContext _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<CoffeeBean>>> GetAllBeans()
+        public async Task<ActionResult<List<CoffeeBeanDto>>> GetAllBeans()
         {
             var beans = await _context.CoffeeBeans.ToListAsync();
 
@@ -24,7 +24,7 @@ namespace TombolaTest.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<CoffeeBean>>> GetBean(string id)
+        public async Task<ActionResult<List<CoffeeBeanDto>>> GetBean(string id)
         {
             var bean = await _context.CoffeeBeans.FindAsync(id);
 
@@ -35,7 +35,7 @@ namespace TombolaTest.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<CoffeeBean>>> AddBean(CoffeeBean bean)
+        public async Task<ActionResult<List<CoffeeBeanDto>>> AddBean(CoffeeBeanDto bean)
         {
             _context.CoffeeBeans.Add(bean);
             await _context.SaveChangesAsync();
@@ -44,7 +44,7 @@ namespace TombolaTest.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<CoffeeBean>>> UpdateBean(CoffeeBean updatedBean)
+        public async Task<ActionResult<List<CoffeeBeanDto>>> UpdateBean(CoffeeBeanDto updatedBean)
         {
             var dbBean = await _context.CoffeeBeans.FindAsync(updatedBean.Id);
             if (dbBean is null)
@@ -66,7 +66,7 @@ namespace TombolaTest.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<List<CoffeeBean>>> DeleteBean(string id)
+        public async Task<ActionResult<List<CoffeeBeanDto>>> DeleteBean(string id)
         {
             var dbBean = await _context.CoffeeBeans.FindAsync(id);
             if (dbBean is null)
@@ -79,23 +79,24 @@ namespace TombolaTest.Controllers
         }
 
         [HttpGet("GetSearchedBean")]
-        public async Task<ActionResult<List<CoffeeBean>>> SearchBean(string? id, int? index, string? cost, string? image, string? colour, string? name, string? description, string? country)
+        public async Task<ActionResult<List<CoffeeBeanDto>>> SearchBean(
+            string? id = null, int? index = null, string? cost = null, 
+            string? colour = null, string? name = null, string? description = null, string? country = null)
         {
             var dbBeans = await _context.CoffeeBeans.Where(b => 
                (string.IsNullOrEmpty(id) || b.Id == id)
             && (string.IsNullOrEmpty(cost) || b.Cost == cost)
             && (!index.HasValue || b.Index == index)
-            && (string.IsNullOrEmpty(image) || b.Image == image)
             && (string.IsNullOrEmpty(colour) || b.Colour == colour)
             && (string.IsNullOrEmpty(name) || b.Name == name)
-            && (string.IsNullOrEmpty(description) || b.Description == description)
+            && (string.IsNullOrEmpty(description) || b.Description.Contains(description))
             && (string.IsNullOrEmpty(country) || b.Country == country)).ToListAsync();
 
             return Ok(dbBeans);
         }
 
         [HttpPut("GetBeanOfTheDay")]
-        public async Task<ActionResult<List<CoffeeBean>>> GetBeanOfTheDay()
+        public async Task<ActionResult<List<CoffeeBeanDto>>> GetBeanOfTheDay()
         {
             var bean = await _context.CoffeeBeans.Where(b => b.IsBOTD == true).ToListAsync();
 

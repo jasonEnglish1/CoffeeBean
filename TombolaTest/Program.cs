@@ -1,9 +1,10 @@
+using CoffeeBean.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 using System.Text.Json;
-using TombolaTest.Data;
-using TombolaTest.Jobs;
-using TombolaTest.Models;
+using CoffeeBean.Data;
+using CoffeeBean.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,12 +21,11 @@ var options = new JsonSerializerOptions
 };
 
 var json = File.ReadAllText("AllTheBeans.json");
-var data = JsonSerializer.Deserialize<List<CoffeeBean>>(json);
+var data = JsonSerializer.Deserialize<List<CoffeeBeanDto>>(json);
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
 });
 
 

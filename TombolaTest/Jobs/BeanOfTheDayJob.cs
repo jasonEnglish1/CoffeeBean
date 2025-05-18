@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quartz;
-using TombolaTest.Data;
+using CoffeeBean.Data;
 
-namespace TombolaTest.Jobs
+namespace CoffeeBean.Jobs
 {
     public class BeanOfTheDayJob(DataContext context) : IJob
     {
         private readonly DataContext _context = context;
-        public async Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext jobContext)
         {
             var dbBeanCurrent = await _context.CoffeeBeans.Where(b => b.IsBOTD == true).ToListAsync();
             var isOldBean = true;
@@ -22,8 +22,7 @@ namespace TombolaTest.Jobs
                     dbBeanNew.IsBOTD = true;
                     _context.SaveChanges();
                     isOldBean = false;
-                }
-                ;
+                };
             }
         }
     }
