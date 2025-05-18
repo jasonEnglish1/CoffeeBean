@@ -20,6 +20,7 @@ namespace TombolaTest.Jobs
                 {
                     dbBeanCurrent[0].IsBOTD = false;
                     dbBeanNew.IsBOTD = true;
+                    _context.SaveChanges();
                     isOldBean = false;
                 }
                 ;
